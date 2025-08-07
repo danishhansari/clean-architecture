@@ -1,3 +1,3 @@
-import { UserRepository } from "./user-repository";
+import { AirplaneRepository } from "./airplane-repository";
 
-export { UserRepository };
+export { AirplaneRepository };

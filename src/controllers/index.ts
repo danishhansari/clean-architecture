@@ -1,3 +1,3 @@
-import { userController } from "./user-controller";
+import AirplaneController from "./airplane-controller";
 
-export { userController };
+export { AirplaneController };

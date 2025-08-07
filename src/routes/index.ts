@@ -3,6 +3,6 @@ import { v1 } from "./v1";
 
 const allRoutes = new Hono();
 
-allRoutes.route("/v1", v1);
+allRoutes.basePath("/v1").route("/", v1);
 
 export { allRoutes };

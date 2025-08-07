@@ -3,7 +3,9 @@
   "scripts": {
     "dev": "bun run --hot src/index.ts",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate"
+    "db:migrate": "drizzle-kit migrate",
+    "db:seed:up": "bun run src/seeders/up.ts",
+    "db:seed:down": "bun run src/seeders/down.ts"
   },
   "dependencies": {
     "@types/winston": "^2.4.4",
@@ -17,6 +19,7 @@
   "devDependencies": {
     "@types/bun": "latest",
     "@types/pg": "^8.15.5",
-    "drizzle-kit": "^0.31.4"
+    "drizzle-kit": "^0.31.4",
+    "drizzle-seed": "^0.3.1"
   }
 }

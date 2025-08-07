@@ -1,8 +1,8 @@
 import { Hono } from "hono";
-import { userController } from "../../controllers";
+import { airplaneRoute } from "./airplane-route";
 
 const v1 = new Hono();
 
-v1.get("/", (c) => userController(c));
+v1.basePath("/airplane").route("/", airplaneRoute);
 
 export { v1 };
