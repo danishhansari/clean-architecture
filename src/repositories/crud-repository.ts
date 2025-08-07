@@ -1,6 +1,8 @@
 import { PgTable } from "drizzle-orm/pg-core";
 import { InferInsertModel, InferSelectModel, eq } from "drizzle-orm";
 import { db } from "../db";
+import { AppError } from "../utils/errors/app-error";
+import { StatusCodes } from "http-status-codes";
 
 export class CrudRepository<
   TModel extends PgTable,
@@ -30,11 +32,16 @@ export class CrudRepository<
     return this.query.findMany();
   }
 
-  async getById(
-    id: number | string
-  ): Promise<InferSelectModel<TModel> | undefined> {
-    return this.query.findFirst({
+  async getById(id: number | string): Promise<InferSelectModel<TModel>> {
+    const response = await this.query.findFirst({
       where: () => eq(this.idColumn, id),
     });
+    if (!response) {
+      throw new AppError(
+        "Not able to find the resource",
+        StatusCodes.NOT_FOUND
+      );
+    }
+    return response;
   }
 }

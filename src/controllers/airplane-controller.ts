@@ -17,7 +17,7 @@ const createAirplane = async (c: Context) => {
   } catch (error) {
     // @ts-ignore
     ErrorResponse.error = error;
-    c.json(ErrorResponse);
+    return c.json(ErrorResponse);
   }
 };
 
@@ -31,8 +31,23 @@ const getAirplanes = async (c: Context) => {
   } catch (error) {
     // @ts-ignore
     ErrorResponse.error = error;
-    c.json(ErrorResponse);
+    return c.json(ErrorResponse);
   }
 };
 
-export default { getAirplanes, createAirplane };
+const getAirplane = async (c: Context) => {
+  try {
+    const body = c.req.param();
+    const id = body.id;
+    const airplane = await AirplaneService.getAirplane(id);
+    SuccessResponse.data = airplane;
+    c.status(StatusCodes.OK);
+    return c.json(SuccessResponse);
+  } catch (error) {
+    // @ts-ignore
+    ErrorResponse.error = error;
+    return c.json(ErrorResponse);
+  }
+};
+
+export default { getAirplanes, createAirplane, getAirplane };
