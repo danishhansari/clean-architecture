@@ -15,6 +15,27 @@
       "when": 1754586192187,
       "tag": "0001_broken_korath",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1754678121937,
+      "tag": "0002_lovely_shard",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1754678576974,
+      "tag": "0003_smiling_starjammers",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1754679698449,
+      "tag": "0004_grey_anthem",
+      "breakpoints": true
     }
   ]
 }
