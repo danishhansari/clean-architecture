@@ -89,6 +89,7 @@ const updateAirplane = async (c: Context) => {
     return c.json(ErrorResponse);
   }
 };
+
 export default {
   getAirplanes,
   createAirplane,

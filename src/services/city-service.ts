@@ -30,8 +30,10 @@ const createCity = async (data: InferInsertModel<typeof city>) => {
 
 const getCities = async () => {
   try {
-    return await cityRepo.getAll();
+    const response = await cityRepo.getAll();
+    return response;
   } catch (error) {
+    console.log(error);
     throw new AppError(
       "Cannot fetch data of all the city",
       StatusCodes.INTERNAL_SERVER_ERROR
@@ -41,12 +43,13 @@ const getCities = async () => {
 
 const getCity = async (id: string) => {
   try {
-    return await cityRepo.getById(id);
+    const response = await cityRepo.getById(id);
+    return response;
   } catch (error) {
     // @ts-ignore
     if (error.statusCode === StatusCodes.NOT_FOUND) {
       throw new AppError(
-        "The airplane you requested is not present",
+        "The city you requested is not present",
         StatusCodes.NOT_FOUND
       );
     }
@@ -59,17 +62,18 @@ const getCity = async (id: string) => {
 
 const deleteCity = async (id: string) => {
   try {
-    return await cityRepo.delete(id);
+    const response = await cityRepo.delete(id);
+    return response;
   } catch (error) {
     // @ts-ignore
     if (error.statusCode === StatusCodes.NOT_FOUND) {
       throw new AppError(
-        "The airplane you requested to delete is not present",
+        "The city you requested to delete is not present",
         StatusCodes.NOT_FOUND
       );
     }
     throw new AppError(
-      "Cannot delete data of the airplane",
+      "Cannot delete data of the city",
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }

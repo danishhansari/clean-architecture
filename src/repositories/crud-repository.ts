@@ -25,7 +25,10 @@ export class CrudRepository<
   };
 
   delete = async (id: number | string) => {
-    const [response] = await db.delete(this.model).where(eq(this.idColumn, id));
+    const [response] = await db
+      .delete(this.model)
+      .where(eq(this.idColumn, id))
+      .returning();
     if (!response) {
       throw new AppError(
         "Not able to delete this resource",
