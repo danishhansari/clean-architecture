@@ -1,35 +1,47 @@
-import { InferInsertModel } from "drizzle-orm";
-import { airplane } from "../db/schema";
-import { AirplaneRepository } from "../repositories";
+import { DrizzleQueryError, InferInsertModel } from "drizzle-orm";
+import { city } from "../db/schema";
+import { CityRepository } from "../repositories";
 import { AppError } from "../utils/errors/app-error";
 import { StatusCodes } from "http-status-codes";
 
-const airplaneRepo = new AirplaneRepository();
-const createAirplane = async (data: InferInsertModel<typeof airplane>) => {
+const cityRepo = new CityRepository();
+const createCity = async (data: InferInsertModel<typeof city>) => {
   try {
-    return airplaneRepo.create(data);
+    const response = await cityRepo.create(data);
+    return response;
+  } catch (error: unknown) {
+    if (error instanceof DrizzleQueryError) {
+      const cause = error.cause;
+      // @ts-ignore
+      if (cause.code == 23502) {
+        throw new AppError("City name cannot be empty", StatusCodes.CONFLICT);
+      }
+      // @ts-ignore
+      if (cause.code == 23505) {
+        throw new AppError(
+          "City name cannot be duplicate",
+          StatusCodes.CONFLICT
+        );
+      }
+    }
+    throw new AppError("Cannot create city", StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+};
+
+const getCities = async () => {
+  try {
+    return await cityRepo.getAll();
   } catch (error) {
     throw new AppError(
-      "Cannot create plane",
+      "Cannot fetch data of all the city",
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }
 };
 
-const getAirplanes = async () => {
+const getCity = async (id: string) => {
   try {
-    return await airplaneRepo.getAll();
-  } catch (error) {
-    throw new AppError(
-      "Cannot fetch data of all the planes",
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
-  }
-};
-
-const getAirplane = async (id: string) => {
-  try {
-    return await airplaneRepo.getById(id);
+    return await cityRepo.getById(id);
   } catch (error) {
     // @ts-ignore
     if (error.statusCode === StatusCodes.NOT_FOUND) {
@@ -45,9 +57,9 @@ const getAirplane = async (id: string) => {
   }
 };
 
-const deleteAirplane = async (id: string) => {
+const deleteCity = async (id: string) => {
   try {
-    return await airplaneRepo.delete(id);
+    return await cityRepo.delete(id);
   } catch (error) {
     // @ts-ignore
     if (error.statusCode === StatusCodes.NOT_FOUND) {
@@ -63,12 +75,12 @@ const deleteAirplane = async (id: string) => {
   }
 };
 
-const updateAirplane = async (
+const updateCity = async (
   id: string,
-  data: Partial<InferInsertModel<typeof airplane>>
+  data: Partial<InferInsertModel<typeof city>>
 ) => {
   try {
-    return await airplaneRepo.update(id, data);
+    return await cityRepo.update(id, data);
   } catch (error) {
     // @ts-ignore
     if (error.statusCode === StatusCodes.NOT_FOUND) {
@@ -85,9 +97,9 @@ const updateAirplane = async (
 };
 
 export default {
-  getAirplanes,
-  createAirplane,
-  getAirplane,
-  deleteAirplane,
-  updateAirplane,
+  getCities,
+  createCity,
+  getCity,
+  deleteCity,
+  updateCity,
 };

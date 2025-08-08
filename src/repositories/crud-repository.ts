@@ -20,19 +20,45 @@ export class CrudRepository<
     private idColumn: TIdColumn
   ) {}
 
-  async create(data: InferInsertModel<TModel>) {
-    return db.insert(this.model).values(data).returning();
-  }
+  create = async (data: InferInsertModel<TModel>) => {
+    return await db.insert(this.model).values(data).returning();
+  };
 
-  async delete(id: number | string) {
-    return db.delete(this.model).where(eq(this.idColumn, id)).returning();
-  }
+  delete = async (id: number | string) => {
+    const [response] = await db.delete(this.model).where(eq(this.idColumn, id));
+    if (!response) {
+      throw new AppError(
+        "Not able to delete this resource",
+        StatusCodes.NOT_FOUND
+      );
+    }
+    return response;
+  };
 
-  async getAll(): Promise<InferSelectModel<TModel>[]> {
-    return this.query.findMany();
-  }
+  update = async (
+    id: number | string,
+    data: Partial<InferInsertModel<TModel>>
+  ) => {
+    const [response] = await db
+      .update(this.model)
+      .set(data)
+      .where(eq(this.idColumn, id))
+      .returning();
 
-  async getById(id: number | string): Promise<InferSelectModel<TModel>> {
+    if (!response) {
+      throw new AppError(
+        "Not able to update this resource",
+        StatusCodes.NOT_FOUND
+      );
+    }
+    return response;
+  };
+
+  getAll = async (): Promise<InferSelectModel<TModel>[]> => {
+    return await this.query.findMany();
+  };
+
+  getById = async (id: number | string): Promise<InferSelectModel<TModel>> => {
     const response = await this.query.findFirst({
       where: () => eq(this.idColumn, id),
     });
@@ -43,5 +69,5 @@ export class CrudRepository<
       );
     }
     return response;
-  }
+  };
 }

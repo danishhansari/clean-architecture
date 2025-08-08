@@ -13,3 +13,10 @@ export const airplane = pgTable("airplanes", {
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 });
+
+export const city = pgTable("city", {
+  id: serial("id").primaryKey(),
+  name: varchar({ length: 50 }).notNull().unique(),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow(),
+});
