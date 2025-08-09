@@ -1,25 +1,24 @@
 import { InferInsertModel } from "drizzle-orm";
-import { airplane } from "../db/schema";
-import { AirplaneRepository } from "../repositories";
+import { airport } from "../db/schema";
+import { AirportRepository } from "../repositories";
 import { AppError } from "../utils/errors/app-error";
 import { StatusCodes } from "http-status-codes";
 
-const airplaneRepo = new AirplaneRepository();
-const createAirplane = async (data: InferInsertModel<typeof airplane>) => {
+const airportRepo = new AirportRepository();
+const createAirport = async (data: InferInsertModel<typeof airport>) => {
   try {
-    const response = await airplaneRepo.create(data);
-    return response;
+    return airportRepo.create(data);
   } catch (error) {
     throw new AppError(
-      "Cannot create plane",
+      "Cannot create airport",
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }
 };
 
-const getAirplanes = async () => {
+const getAirports = async () => {
   try {
-    const response = await airplaneRepo.getAll();
+    const response = await airportRepo.getAll();
     return response;
   } catch (error) {
     throw new AppError(
@@ -29,14 +28,15 @@ const getAirplanes = async () => {
   }
 };
 
-const getAirplane = async (id: string) => {
+const getAirport = async (id: string) => {
   try {
-    return await airplaneRepo.getById(id);
+    const response = await airportRepo.getById(id);
+    return response;
   } catch (error) {
     // @ts-ignore
     if (error.statusCode === StatusCodes.NOT_FOUND) {
       throw new AppError(
-        "The airplane you requested is not present",
+        "The airport you requested is not present",
         StatusCodes.NOT_FOUND
       );
     }
@@ -47,30 +47,32 @@ const getAirplane = async (id: string) => {
   }
 };
 
-const deleteAirplane = async (id: string) => {
+const deleteAirport = async (id: string) => {
   try {
-    return await airplaneRepo.delete(id);
+    const response = await airportRepo.delete(id);
+    return response;
   } catch (error) {
     // @ts-ignore
     if (error.statusCode === StatusCodes.NOT_FOUND) {
       throw new AppError(
-        "The airplane you requested to delete is not present",
+        "The airport you requested to delete is not present",
         StatusCodes.NOT_FOUND
       );
     }
     throw new AppError(
-      "Cannot delete data of the airplane",
+      "Cannot delete data of the airport",
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }
 };
 
-const updateAirplane = async (
+const updateAirport = async (
   id: string,
-  data: Partial<InferInsertModel<typeof airplane>>
+  data: Partial<InferInsertModel<typeof airport>>
 ) => {
   try {
-    return await airplaneRepo.update(id, data);
+    const response = await airportRepo.update(id, data);
+    return response;
   } catch (error) {
     // @ts-ignore
     if (error.statusCode === StatusCodes.NOT_FOUND) {
@@ -80,16 +82,16 @@ const updateAirplane = async (
       );
     }
     throw new AppError(
-      "Cannot delete data of the airplane",
+      "Cannot delete data of the airport",
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }
 };
 
 export default {
-  getAirplanes,
-  createAirplane,
-  getAirplane,
-  deleteAirplane,
-  updateAirplane,
+  getAirports,
+  createAirport,
+  getAirport,
+  deleteAirport,
+  updateAirport,
 };

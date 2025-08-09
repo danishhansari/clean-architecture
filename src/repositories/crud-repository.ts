@@ -21,7 +21,8 @@ export class CrudRepository<
   ) {}
 
   create = async (data: InferInsertModel<TModel>) => {
-    return await db.insert(this.model).values(data).returning();
+    const response = await db.insert(this.model).values(data).returning();
+    return response;
   };
 
   delete = async (id: number | string) => {
@@ -58,7 +59,8 @@ export class CrudRepository<
   };
 
   getAll = async (): Promise<InferSelectModel<TModel>[]> => {
-    return await this.query.findMany();
+    const response = await this.query.findMany();
+    return response;
   };
 
   getById = async (id: number | string): Promise<InferSelectModel<TModel>> => {
