@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import {
+  date,
   index,
   integer,
   pgTable,
@@ -34,7 +35,7 @@ export const airport = pgTable(
     id: serial("id").primaryKey(),
     name: varchar({ length: 50 }).notNull(),
     address: varchar({ length: 150 }).notNull(),
-    code: varchar({ length: 6 }).notNull().unique(),
+    code: varchar().notNull().unique(),
     createdAt: timestamp().notNull().defaultNow(),
     updatedAt: timestamp().notNull().defaultNow(),
     cityId: integer()
@@ -47,6 +48,29 @@ export const airport = pgTable(
     index("airport_idx").on(table.name),
     uniqueIndex("code_idx").on(table.code),
   ]
+);
+
+export const flight = pgTable(
+  "flight",
+  {
+    id: serial("id").primaryKey(),
+    flightNumber: varchar({ length: 20 }).notNull(),
+    airplaneId: integer()
+      .notNull()
+      .references(() => airplane.id, { onDelete: "cascade" }),
+    departureAirportId: varchar()
+      .notNull()
+      .references(() => airport.code, { onDelete: "cascade" }),
+    arrivalAirportId: varchar()
+      .notNull()
+      .references(() => airport.code, { onDelete: "cascade" }),
+    arrivalTime: date().notNull(),
+    departureTime: date().notNull(),
+    price: integer().notNull(),
+    boardingGate: varchar({ length: 50 }),
+    totalSeats: integer().notNull(),
+  },
+  (table) => [index("flightNumber_idx").on(table.flightNumber)]
 );
 
 export const airportRelation = relations(airport, ({ one }) => ({
