@@ -1,9 +1,9 @@
 import { reset } from "drizzle-seed";
 import { db } from "../db";
-import { airplane } from "../db/schema";
+import * as schema from "../db/schema";
 
 const down = async () => {
-  await reset(db, { airplane });
+  await reset(db, schema);
 };
 
 down();

@@ -1,9 +1,9 @@
 import { seed } from "drizzle-seed";
 import { db } from "../db";
-import { airplane } from "../db/schema";
+import * as schema from "../db/schema";
 
 const up = async () => {
-  await seed(db, { airplane });
+  await seed(db, schema);
 };
 
 up();
