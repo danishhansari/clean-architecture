@@ -1,7 +1,8 @@
-import { and, eq, gte, InferInsertModel, lte, sql } from "drizzle-orm";
+import { and, eq, gte, lte, SQL } from "drizzle-orm";
 import { db } from "../db";
 import { flight } from "../db/schema";
 import { CrudRepository } from "./crud-repository";
+import { FlightFiltersType } from "../types";
 
 export class FlightRepository extends CrudRepository<
   typeof flight,
@@ -12,14 +13,8 @@ export class FlightRepository extends CrudRepository<
     super(flight, db.query.flight, flight.id);
   }
 
-  getAllFlights = async (
-    // filters: Partial<InferInsertModel<typeof flight>>
-    filters: any
-  ) => {
-    // const conditions = Object.entries(filters).map(
-    //   ([key, value]) => sql`"${sql.raw(key)}" = ${value}`
-    // );
-    const conditions = [];
+  getAllFlights = async (filters: FlightFiltersType) => {
+    const conditions: SQL[] = [];
 
     if (filters.departureAirportId) {
       conditions.push(

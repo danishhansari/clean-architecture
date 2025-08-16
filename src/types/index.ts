@@ -4,3 +4,12 @@ export interface baseResponse {
   error: Record<string, unknown>;
   data: Record<string, unknown>;
 }
+
+
+export interface FlightFiltersType {
+  departureAirportId?: string;
+  arrivalAirportId?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  totalSeats?: number;
+};

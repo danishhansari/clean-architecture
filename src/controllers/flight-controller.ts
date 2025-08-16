@@ -2,7 +2,7 @@ import { Context } from "hono";
 import { StatusCodes } from "http-status-codes";
 import { FlightService } from "../services";
 import { ErrorResponse, SuccessResponse } from "../utils/commons";
-import { Params } from "hono/router";
+
 
 const createFlight = async (c: Context) => {
   try {

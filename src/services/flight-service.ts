@@ -32,8 +32,8 @@ const createFlight = async (data: InferInsertModel<typeof flight>) => {
 };
 
 const getAllFlights = async (query: Params) => {
-  // const customFilters: Partial<InferInsertModel<typeof flight>> = {};
-  const customFilters: any = {};
+  const customFilters: Record<string, string | number> = {};
+
   if (query.trips) {
     const [departureAirportId, arrivalAirportId] = query.trips.split("-");
     customFilters.departureAirportId = departureAirportId;
@@ -42,8 +42,7 @@ const getAllFlights = async (query: Params) => {
   if (query.price) {
     const [minPrice, maxPrice] = query.price.split("-");
     customFilters.minPrice = Number(minPrice);
-    customFilters.maxPrice =
-      maxPrice != undefined ? Number(maxPrice) : maxPrice;
+    customFilters.maxPrice = maxPrice != undefined ? Number(maxPrice) : 20000;
   }
   if (query.travellers) {
     customFilters.totalSeats = query.travellers;
@@ -53,7 +52,6 @@ const getAllFlights = async (query: Params) => {
     const flights = await flightRepo.getAllFlights(customFilters);
     return flights;
   } catch (error) {
-    console.log(error);
     throw new AppError(
       "Cannot fetch the data of all the flights ",
       StatusCodes.INTERNAL_SERVER_ERROR
