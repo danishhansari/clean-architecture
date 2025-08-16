@@ -43,6 +43,13 @@
       "when": 1754719974286,
       "tag": "0005_simple_toad",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1755367820149,
+      "tag": "0006_chilly_iron_monger",
+      "breakpoints": true
     }
   ]
 }

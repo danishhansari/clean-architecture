@@ -32,8 +32,7 @@ const createFlight = async (data: InferInsertModel<typeof flight>) => {
 };
 
 const getAllFlights = async (query: Params) => {
-  const customFilters: Record<string, string | number> = {};
-
+  const customFilters: Record<string, string | number | Date> = {};
   if (query.trips) {
     const [departureAirportId, arrivalAirportId] = query.trips.split("-");
     customFilters.departureAirportId = departureAirportId;
@@ -41,6 +40,7 @@ const getAllFlights = async (query: Params) => {
   }
   if (query.price) {
     const [minPrice, maxPrice] = query.price.split("-");
+    customFilters.price = query.price;
     customFilters.minPrice = Number(minPrice);
     customFilters.maxPrice = maxPrice != undefined ? Number(maxPrice) : 20000;
   }
@@ -48,6 +48,15 @@ const getAllFlights = async (query: Params) => {
     customFilters.totalSeats = query.travellers;
   }
 
+  if (query.tripDate) {
+    const start = new Date(query.tripDate);
+    const end = new Date(start);
+    end.setDate(end.getDate() + 1);
+
+    customFilters.startDate = start;
+    customFilters.endDate = end;
+    customFilters.tripDate = query.tripDate;
+  }
   try {
     const flights = await flightRepo.getAllFlights(customFilters);
     return flights;

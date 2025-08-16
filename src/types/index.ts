@@ -12,4 +12,8 @@ export interface FlightFiltersType {
   minPrice?: number;
   maxPrice?: number;
   totalSeats?: number;
-};
+  startDate?: Date;
+  endDate?: Date;
+  tripDate?: string | number;
+  price?: number;
+}

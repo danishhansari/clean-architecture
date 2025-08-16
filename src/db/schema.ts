@@ -64,8 +64,8 @@ export const flight = pgTable(
     arrivalAirportId: varchar()
       .notNull()
       .references(() => airport.code, { onDelete: "cascade" }),
-    arrivalTime: date().notNull(),
-    departureTime: date().notNull(),
+    arrivalTime: timestamp({ mode: "date" }).notNull(),
+    departureTime: timestamp({ mode: "date" }).notNull(),
     price: integer().notNull(),
     boardingGate: varchar({ length: 50 }),
     totalSeats: integer().notNull(),

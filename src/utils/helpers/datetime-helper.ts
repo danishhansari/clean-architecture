@@ -1,5 +1,3 @@
-export const compareDateTime = (dateStr1: string, dateStr2: string) => {
-  const date1 = new Date(dateStr1);
-  const date2 = new Date(dateStr2);
+export const compareDateTime = (date1: Date, date2: Date) => {
   return date1 < date2;
 };

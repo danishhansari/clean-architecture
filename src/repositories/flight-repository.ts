@@ -1,4 +1,4 @@
-import { and, eq, gte, lte, SQL } from "drizzle-orm";
+import { and, asc, between, desc, eq, gte, lte, SQL } from "drizzle-orm";
 import { db } from "../db";
 import { flight } from "../db/schema";
 import { CrudRepository } from "./crud-repository";
@@ -25,12 +25,10 @@ export class FlightRepository extends CrudRepository<
       conditions.push(eq(flight.arrivalAirportId, filters.arrivalAirportId));
     }
 
-    if (filters.minPrice != undefined) {
-      conditions.push(gte(flight.price, filters.minPrice));
-    }
-
-    if (filters.maxPrice != undefined) {
-      conditions.push(lte(flight.price, filters.maxPrice));
+    if (filters.price && filters.minPrice && filters.maxPrice) {
+      conditions.push(
+        between(flight.price, filters.minPrice, filters.maxPrice)
+      );
     }
     if (filters.totalSeats) {
       conditions.push(gte(flight.totalSeats, filters.totalSeats));
