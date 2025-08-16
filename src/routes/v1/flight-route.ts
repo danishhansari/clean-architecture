@@ -9,4 +9,6 @@ flightRoute.post(
   async (c, next) => flightMiddleware.validateFlight(c, next),
   async (c) => FlightController.createFlight(c)
 );
+flightRoute.get("/", async (c) => FlightController.getAllFlights(c));
+
 export { flightRoute };

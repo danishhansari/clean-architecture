@@ -2,6 +2,7 @@ import { Context } from "hono";
 import { StatusCodes } from "http-status-codes";
 import { FlightService } from "../services";
 import { ErrorResponse, SuccessResponse } from "../utils/commons";
+import { Params } from "hono/router";
 
 const createFlight = async (c: Context) => {
   try {
@@ -30,6 +31,23 @@ const createFlight = async (c: Context) => {
   }
 };
 
+const getAllFlights = async (c: Context) => {
+  try {
+    const query = c.req.query();
+    const flights = await FlightService.getAllFlights(query);
+    SuccessResponse.data = flights;
+    c.status(StatusCodes.CREATED);
+    return c.json(SuccessResponse);
+  } catch (error) {
+    // @ts-ignore
+    ErrorResponse.error = error;
+    //  @ts-ignore
+    c.status(error.statusCode);
+    return c.json(ErrorResponse);
+  }
+};
+
 export default {
   createFlight,
+  getAllFlights,
 };
