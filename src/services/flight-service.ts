@@ -61,6 +61,7 @@ const getAllFlights = async (query: Params) => {
     const flights = await flightRepo.getAllFlights(customFilters);
     return flights;
   } catch (error) {
+    console.log(error);
     throw new AppError(
       "Cannot fetch the data of all the flights ",
       StatusCodes.INTERNAL_SERVER_ERROR

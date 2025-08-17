@@ -50,6 +50,13 @@
       "when": 1755367820149,
       "tag": "0006_chilly_iron_monger",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1755411012309,
+      "tag": "0007_pink_gladiator",
+      "breakpoints": true
     }
   ]
 }

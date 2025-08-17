@@ -1,6 +1,6 @@
 import { and, asc, between, desc, eq, gte, lte, SQL } from "drizzle-orm";
 import { db } from "../db";
-import { flight } from "../db/schema";
+import { airplane, flight } from "../db/schema";
 import { CrudRepository } from "./crud-repository";
 import { FlightFiltersType } from "../types";
 
@@ -36,6 +36,27 @@ export class FlightRepository extends CrudRepository<
 
     const response = await db.query.flight.findMany({
       where: conditions.length ? and(...conditions) : undefined,
+      with: {
+        airplaneDetails: true,
+        departureAirportDetails: {
+          with: {
+            airportDetails: {
+              with: {
+                cityDetails: true,
+              },
+            },
+          },
+        },
+        arrivalAirportDetails: {
+          with: {
+            airportDetails: {
+              with: {
+                cityDetails: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     return response;

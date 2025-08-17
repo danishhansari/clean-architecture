@@ -1,14 +1,17 @@
 import { relations } from "drizzle-orm";
 import {
-  date,
   index,
   integer,
+  pgEnum,
   pgTable,
   serial,
   timestamp,
   uniqueIndex,
   varchar,
 } from "drizzle-orm/pg-core";
+import { SEAT_TYPE } from "../utils/commons";
+
+export const { BUSINESS, BUSINESS_ECONOMY, ECONOMY, FIRST_CLASS } = SEAT_TYPE;
 
 export const airplane = pgTable(
   "airplanes",
@@ -73,13 +76,52 @@ export const flight = pgTable(
   (table) => [index("flightNumber_idx").on(table.flightNumber)]
 );
 
+export const typeEnum = pgEnum("typeEnum", [
+  BUSINESS,
+  BUSINESS_ECONOMY,
+  ECONOMY,
+  FIRST_CLASS,
+]);
+
+export const seats = pgTable("seats", {
+  id: serial("id").primaryKey(),
+  airplaneId: integer()
+    .notNull()
+    .references(() => airplane.id, { onDelete: "cascade" }),
+  row: integer().notNull(),
+  col: varchar().notNull(),
+  type: typeEnum().notNull().default(ECONOMY),
+});
+
+export const seatsRelation = relations(seats, ({ one }) => ({
+  seatsDetails: one(airplane, {
+    fields: [seats.airplaneId],
+    references: [airplane.id],
+  }),
+}));
+
 export const airportRelation = relations(airport, ({ one }) => ({
-  airportInfo: one(city, {
+  airportDetails: one(city, {
     fields: [airport.cityId],
     references: [city.id],
   }),
 }));
 
 export const cityRelation = relations(city, ({ many }) => ({
-  cityInfo: many(airport),
+  cityDetails: many(airport),
+}));
+
+export const flightRelations = relations(flight, ({ one }) => ({
+  airplaneDetails: one(airplane, {
+    fields: [flight.airplaneId],
+    references: [airplane.id],
+  }),
+  departureAirportDetails: one(airport, {
+    fields: [flight.departureAirportId],
+    references: [airport.code],
+  }),
+  arrivalAirportDetails: one(airport, {
+    fields: [flight.arrivalAirportId],
+    references: [airport.code],
+  }),
 }));

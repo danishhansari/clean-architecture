@@ -3,7 +3,6 @@ import { StatusCodes } from "http-status-codes";
 import { FlightService } from "../services";
 import { ErrorResponse, SuccessResponse } from "../utils/commons";
 
-
 const createFlight = async (c: Context) => {
   try {
     const body = await c.req.json();
@@ -36,7 +35,7 @@ const getAllFlights = async (c: Context) => {
     const query = c.req.query();
     const flights = await FlightService.getAllFlights(query);
     SuccessResponse.data = flights;
-    c.status(StatusCodes.CREATED);
+    c.status(StatusCodes.OK);
     return c.json(SuccessResponse);
   } catch (error) {
     // @ts-ignore
