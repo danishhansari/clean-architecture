@@ -1,5 +1,5 @@
 {
-  "name": "airline-backend",
+  "name": "flight-backend",
   "scripts": {
     "dev": "bun run --hot src/index.ts",
     "db:generate": "drizzle-kit generate",
