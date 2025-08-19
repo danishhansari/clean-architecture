@@ -13,6 +13,35 @@ export class FlightRepository extends CrudRepository<
     super(flight, db.query.flight, flight.id);
   }
 
+  getFlightById = async (id: number) => {
+    const response = await db.query.flight.findFirst({
+      where: eq(flight.id, id),
+      with: {
+        airplaneDetails: true,
+        departureAirportDetails: {
+          with: {
+            airportDetails: {
+              with: {
+                cityDetails: true,
+              },
+            },
+          },
+        },
+        arrivalAirportDetails: {
+          with: {
+            airportDetails: {
+              with: {
+                cityDetails: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return response;
+  };
+
   getAllFlights = async (filters: FlightFiltersType) => {
     const conditions: SQL[] = [];
 

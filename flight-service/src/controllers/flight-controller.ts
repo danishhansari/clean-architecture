@@ -46,7 +46,25 @@ const getAllFlights = async (c: Context) => {
   }
 };
 
+const getFlight = async (c: Context) => {
+  try {
+    const body = c.req.param();
+    const id = Number(body.id);
+    const flight = await FlightService.getFlight(id);
+    SuccessResponse.data = flight;
+    c.status(StatusCodes.OK);
+    return c.json(SuccessResponse);
+  } catch (error) {
+    // @ts-ignore
+    ErrorResponse.error = error;
+    //  @ts-ignore
+    c.status(error.statusCode);
+    return c.json(ErrorResponse);
+  }
+};
+
 export default {
   createFlight,
   getAllFlights,
+  getFlight,
 };
