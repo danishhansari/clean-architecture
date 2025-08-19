@@ -5,6 +5,7 @@ import { AppError } from "../utils/errors/app-error";
 import { StatusCodes } from "http-status-codes";
 import { compareDateTime } from "../utils/helpers/datetime-helper";
 import { Params } from "hono/router";
+import { UpdateSeatsType } from "../types";
 
 const flightRepo = new FlightRepository();
 const createFlight = async (data: InferInsertModel<typeof flight>) => {
@@ -86,8 +87,26 @@ const getFlight = async (id: number) => {
   }
 };
 
+const updateSeats = async (data: UpdateSeatsType) => {
+  try {
+    const response = await flightRepo.updateRemainingSeats(
+      data.flightId,
+      data.seats,
+      data.decrement
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw new AppError(
+      "Cannot update the seats",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+};
+
 export default {
   createFlight,
   getAllFlights,
   getFlight,
+  updateSeats,
 };

@@ -48,10 +48,32 @@ const getAllFlights = async (c: Context) => {
 
 const getFlight = async (c: Context) => {
   try {
-    const body = c.req.param();
-    const id = Number(body.id);
+    const params = c.req.param();
+    const id = Number(params.id);
     const flight = await FlightService.getFlight(id);
     SuccessResponse.data = flight;
+    c.status(StatusCodes.OK);
+    return c.json(SuccessResponse);
+  } catch (error) {
+    // @ts-ignore
+    ErrorResponse.error = error;
+    //  @ts-ignore
+    c.status(error.statusCode);
+    return c.json(ErrorResponse);
+  }
+};
+
+const updateSeats = async (c: Context) => {
+  try {
+    const body = await c.req.json();
+    const param = c.req.param();
+    const payload = {
+      flightId: Number(param.id),
+      seats: Number(body.seats),
+      decrement: body.decrement,
+    };
+    const updateSeats = await FlightService.updateSeats(payload);
+    SuccessResponse.data = updateSeats;
     c.status(StatusCodes.OK);
     return c.json(SuccessResponse);
   } catch (error) {
@@ -67,4 +89,5 @@ export default {
   createFlight,
   getAllFlights,
   getFlight,
+  updateSeats,
 };

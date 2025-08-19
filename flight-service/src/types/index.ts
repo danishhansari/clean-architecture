@@ -5,7 +5,6 @@ export interface baseResponse {
   data: Record<string, unknown>;
 }
 
-
 export interface FlightFiltersType {
   departureAirportId?: string;
   arrivalAirportId?: string;
@@ -16,4 +15,10 @@ export interface FlightFiltersType {
   endDate?: Date;
   tripDate?: string | number;
   price?: number;
+}
+
+export interface UpdateSeatsType {
+  flightId: number;
+  seats: number;
+  decrement: boolean;
 }

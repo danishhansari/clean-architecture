@@ -12,4 +12,10 @@ flightRoute.post(
 flightRoute.get("/", async (c) => FlightController.getAllFlights(c));
 flightRoute.get("/:id", async (c) => FlightController.getFlight(c));
 
+flightRoute.patch(
+  "/:id/seats",
+  async (c, next) => flightMiddleware.validateUpdateSeats(c, next),
+  async (c) => FlightController.updateSeats(c)
+);
+
 export { flightRoute };

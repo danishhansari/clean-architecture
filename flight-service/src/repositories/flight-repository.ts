@@ -1,8 +1,9 @@
-import { and, asc, between, desc, eq, gte, lte, SQL } from "drizzle-orm";
+import { and, between, eq, gte, sql, SQL } from "drizzle-orm";
 import { db } from "../db";
-import { airplane, flight } from "../db/schema";
+import { flight } from "../db/schema";
 import { CrudRepository } from "./crud-repository";
 import { FlightFiltersType } from "../types";
+import { lockRow } from "./queries";
 
 export class FlightRepository extends CrudRepository<
   typeof flight,
@@ -86,6 +87,29 @@ export class FlightRepository extends CrudRepository<
           },
         },
       },
+    });
+
+    return response;
+  };
+
+  updateRemainingSeats = async (
+    flightId: number,
+    count: number,
+    decrease = true
+  ) => {
+    const response = await db.transaction(async (txn) => {
+      await txn.execute(lockRow(flightId, flight, flight.id));
+
+      const updateSeat = await txn
+        .update(flight)
+        .set({
+          totalSeats: sql`${flight.totalSeats} ${sql.raw(
+            decrease ? "-" : "+"
+          )} ${count}`,
+        })
+        .where(eq(flight.id, flightId))
+        .returning();
+      return updateSeat;
     });
 
     return response;
