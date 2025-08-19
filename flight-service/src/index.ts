@@ -5,4 +5,7 @@ const app = new Hono();
 
 app.basePath("/api").route("/", allRoutes);
 
-export default app;
+export default {
+  fetch: app.fetch,
+  port: 8000,
+};

@@ -61,7 +61,24 @@ const getAllFlights = async (query: Params) => {
     const flights = await flightRepo.getAllFlights(customFilters);
     return flights;
   } catch (error) {
-    console.log(error);
+    throw new AppError(
+      "Cannot fetch the data of all the flights ",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+};
+
+const getFlight = async (id: number) => {
+  try {
+    const flight = await flightRepo.getFlightById(id);
+    if (!flight) {
+      throw new AppError(
+        "Not able to find the resource",
+        StatusCodes.NOT_FOUND
+      );
+    }
+    return flight;
+  } catch (error) {
     throw new AppError(
       "Cannot fetch the data of all the flights ",
       StatusCodes.INTERNAL_SERVER_ERROR
@@ -72,4 +89,5 @@ const getAllFlights = async (query: Params) => {
 export default {
   createFlight,
   getAllFlights,
+  getFlight,
 };
