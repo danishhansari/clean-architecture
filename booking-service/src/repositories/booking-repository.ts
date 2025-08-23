@@ -1,10 +1,11 @@
-import { eq, InferInsertModel } from "drizzle-orm";
+import { and, eq, InferInsertModel, lte, ne, notInArray } from "drizzle-orm";
 import { db } from "../db";
 import { booking } from "../db/schema";
 import { CrudRepository } from "./crud-repository";
 import { Txn } from "../types";
 import { AppError } from "../utils/errors/app-error";
 import { StatusCodes } from "http-status-codes";
+import { STATUS } from "../utils/commons";
 
 export class BookingRepository extends CrudRepository<
   typeof booking,
@@ -44,6 +45,20 @@ export class BookingRepository extends CrudRepository<
         StatusCodes.NOT_FOUND
       );
     }
+    return response;
+  };
+
+  cancelOldBookings = async (time: Date) => {
+    const response = await db
+      .update(booking)
+      .set({ status: STATUS.CANCELLED })
+      .where(
+        and(
+          lte(booking.createdAt, time),
+          notInArray(booking.status, [STATUS.BOOKED, STATUS.CANCELLED])
+        )
+      )
+      .returning();
     return response;
   };
 }

@@ -3,6 +3,7 @@ import { BookingService } from "../services";
 import { ErrorResponse, SuccessResponse } from "../utils/commons";
 import { StatusCodes } from "http-status-codes";
 
+const inMemoryDb: Record<string, string> = {};
 const createBooking = async (c: Context) => {
   try {
     const body = await c.req.json();
@@ -27,6 +28,17 @@ const createBooking = async (c: Context) => {
 
 const makeBooking = async (c: Context) => {
   try {
+    const idempotentKey = c.req.param("x-idempotent");
+    if (!idempotentKey) {
+      ErrorResponse.error = "Idempotent key is required";
+      c.status(StatusCodes.BAD_REQUEST);
+      return c.json(ErrorResponse);
+    }
+    if (inMemoryDb[idempotentKey]) {
+      ErrorResponse.error = "Cannot retry to a successful payment";
+      c.status(StatusCodes.BAD_REQUEST);
+      return c.json(ErrorResponse);
+    }
     const body = await c.req.json();
     const booking = await BookingService.makeBooking({
       userId: body.userId,

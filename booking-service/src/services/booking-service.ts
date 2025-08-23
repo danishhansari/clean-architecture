@@ -5,9 +5,9 @@ import { db } from "../db";
 import { flightServiceUrl, STATUS } from "../utils/commons";
 import { AppError } from "../utils/errors/app-error";
 import { StatusCodes } from "http-status-codes";
-import { compareDateTime } from "../utils/helpers/datetime-helper";
 
 const bookingRepo = new BookingRepository();
+
 const createBooking = async (data: InferInsertModel<typeof booking>) => {
   try {
     const result = await db.transaction(async (txn) => {
@@ -112,15 +112,12 @@ const cancelBooking = async (data: InferInsertModel<typeof booking>) => {
       if (data.status === STATUS.CANCELLED) {
         return true;
       }
-      const updateSeats = await fetch(
-        `${flightServiceUrl}/api/v1/flight/${data.flightId}/seats`,
-        {
-          method: "PATCH",
-          body: JSON.stringify({ seats: data.noOfSeats, decrement: false }),
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      const response = await bookingRepo.updateTxn(
+      await fetch(`${flightServiceUrl}/api/v1/flight/${data.flightId}/seats`, {
+        method: "PATCH",
+        body: JSON.stringify({ seats: data.noOfSeats, decrement: false }),
+        headers: { "Content-Type": "application/json" },
+      });
+      const result = await bookingRepo.updateTxn(
         // @ts-ignore
         data.id,
         {
@@ -128,12 +125,24 @@ const cancelBooking = async (data: InferInsertModel<typeof booking>) => {
         },
         txn
       );
-      return response;
+      return result;
     });
+
+    return response;
   } catch (error) {
     // @ts-ignore
     throw new AppError(error.message, error.statusCode);
   }
 };
 
-export default { createBooking, makeBooking };
+const cancelOldBooking = async () => {
+  try {
+    const time = new Date(Date.now() - 1000 * 300);
+    const response = await bookingRepo.cancelOldBookings(time);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export default { createBooking, makeBooking, cancelOldBooking };
