@@ -1,4 +1,10 @@
-import { integer, pgEnum, pgTable, serial } from "drizzle-orm/pg-core";
+import {
+  integer,
+  pgEnum,
+  pgTable,
+  serial,
+  timestamp,
+} from "drizzle-orm/pg-core";
 import { STATUS } from "../utils/commons";
 
 const { BOOKED, CANCELLED, PENDING, INITIATED } = STATUS;
@@ -17,4 +23,6 @@ export const booking = pgTable("booking", {
   totalCost: integer().notNull(),
   status: statusEnum().notNull().default(INITIATED),
   noOfSeats: integer().notNull().default(1),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow(),
 });

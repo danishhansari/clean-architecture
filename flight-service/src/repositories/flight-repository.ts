@@ -100,7 +100,7 @@ export class FlightRepository extends CrudRepository<
     const response = await db.transaction(async (txn) => {
       await txn.execute(lockRow(flightId, flight, flight.id));
 
-      const updateSeat = await txn
+      const [updateSeat] = await txn
         .update(flight)
         .set({
           totalSeats: sql`${flight.totalSeats} ${sql.raw(
