@@ -1,9 +1,9 @@
 import { InferInsertModel } from "drizzle-orm";
 import { BookingRepository } from "../repositories";
-import { booking } from "../db/schema";
-import { db } from "../db";
-import { flightServiceUrl, STATUS } from "../utils/commons";
-import { AppError } from "../utils/errors/app-error";
+import { booking } from "@repo/db";
+import { db } from "@repo/db";
+import { flightServiceUrl, STATUS } from "@repo/commons";
+import { AppError } from "@repo/commons";
 import { StatusCodes } from "http-status-codes";
 
 const bookingRepo = new BookingRepository();

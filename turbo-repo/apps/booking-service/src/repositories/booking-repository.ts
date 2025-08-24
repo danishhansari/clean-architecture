@@ -1,11 +1,11 @@
-import { and, eq, InferInsertModel, lte, ne, notInArray } from "drizzle-orm";
-import { db } from "../db";
-import { booking } from "../db/schema";
-import { CrudRepository } from "./crud-repository";
-import { Txn } from "../types";
-import { AppError } from "../utils/errors/app-error";
+import { and, eq, InferInsertModel, lte, notInArray } from "drizzle-orm";
+import { db } from "@repo/db";
+import { booking } from "@repo/db";
+import { CrudRepository } from "@repo/commons";
+import { Txn } from "@repo/types";
+import { AppError } from "@repo/commons";
 import { StatusCodes } from "http-status-codes";
-import { STATUS } from "../utils/commons";
+import { STATUS } from "@repo/commons";
 
 export class BookingRepository extends CrudRepository<
   typeof booking,

@@ -1,5 +1,5 @@
 {
-  "name": "booking-service",
+  "name": "flight-backend",
   "scripts": {
     "dev": "bun run --hot src/index.ts",
     "db:generate": "drizzle-kit generate",
@@ -8,9 +8,6 @@
     "db:seed:down": "bun run src/seeders/down.ts"
   },
   "dependencies": {
-    "hono": "^4.9.2"
-  },
-  "devDependencies": {
-    "node-cron": "^4.2.1"
+    "hono": "^4.8.12"
   }
 }

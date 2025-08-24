@@ -23,7 +23,12 @@
     "packages/*"
   ],
   "dependencies": {
+    "@types/bun": "^1.2.20",
+    "@types/pg": "^8.15.5",
+    "@types/winston": "^2.4.4",
     "drizzle-orm": "^0.44.4",
-    "postgres": "^3.4.7"
+    "http-status-codes": "^2.3.0",
+    "postgres": "^3.4.7",
+    "winston": "^3.17.0"
   }
 }

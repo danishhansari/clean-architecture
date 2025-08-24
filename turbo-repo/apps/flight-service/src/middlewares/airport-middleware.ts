@@ -2,9 +2,9 @@ import { Context, Next } from "hono";
 import { AppError } from "@repo/commons";
 import { StatusCodes } from "http-status-codes";
 
-const validateBooking = async (c: Context, next: Next) => {
+const validateAirport = async (c: Context, next: Next) => {
   const body = await c.req.json();
-  const required = ["flightId", "userId", "noOfSeats"];
+  const required = ["name", "code", "cityId"];
 
   const missing = required.filter((f) => !body[f]?.toString().trim());
 
@@ -22,4 +22,4 @@ const validateBooking = async (c: Context, next: Next) => {
   await next();
 };
 
-export default { validateBooking };
+export default { validateAirport };

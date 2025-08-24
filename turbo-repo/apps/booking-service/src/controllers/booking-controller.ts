@@ -1,6 +1,6 @@
 import { Context } from "hono";
 import { BookingService } from "../services";
-import { ErrorResponse, SuccessResponse } from "../utils/commons";
+import { ErrorResponse, SuccessResponse } from "@repo/commons";
 import { StatusCodes } from "http-status-codes";
 
 const inMemoryDb: Record<string, string> = {};
