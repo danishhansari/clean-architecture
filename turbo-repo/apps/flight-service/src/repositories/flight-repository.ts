@@ -1,6 +1,6 @@
 import { and, between, eq, gte, sql, SQL } from "drizzle-orm";
 import { flight, db } from "@repo/db";
-import { CrudRepository } from "@repo/commons";
+import { CrudRepository } from "@repo/db";
 import { FlightFiltersType } from "@repo/types";
 import { lockRow } from "@repo/db";
 

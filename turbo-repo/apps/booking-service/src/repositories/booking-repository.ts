@@ -1,7 +1,7 @@
 import { and, eq, InferInsertModel, lte, notInArray } from "drizzle-orm";
 import { db } from "@repo/db";
 import { booking } from "@repo/db";
-import { CrudRepository } from "@repo/commons";
+import { CrudRepository } from "@repo/db";
 import { Txn } from "@repo/types";
 import { AppError } from "@repo/commons";
 import { StatusCodes } from "http-status-codes";

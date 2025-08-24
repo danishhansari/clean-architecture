@@ -33,6 +33,7 @@ const getCities = async () => {
     const response = await cityRepo.getAll();
     return response;
   } catch (error) {
+    console.log(error, "This is error");
     throw new AppError(
       "Cannot fetch data of all the city",
       StatusCodes.INTERNAL_SERVER_ERROR

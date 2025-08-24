@@ -5,4 +5,3 @@ export * from "./enum";
 export * from "./error-response";
 export * from "./success-response";
 export * from "./logger";
-export * from "./repo/crud-repo";

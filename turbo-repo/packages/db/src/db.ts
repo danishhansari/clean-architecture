@@ -1,7 +1,10 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-
 import * as schema from "./schema";
+import { config } from "dotenv";
+import { resolve } from "path";
+config({ path: resolve(__dirname, "../.env") });
+
 const globalForDb = globalThis as unknown as {
   conn: postgres.Sql | undefined;
 };

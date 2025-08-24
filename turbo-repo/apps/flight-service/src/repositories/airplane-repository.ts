@@ -1,5 +1,5 @@
 import { airplane, db } from "@repo/db";
-import { CrudRepository } from "@repo/commons";
+import { CrudRepository } from "@repo/db";
 
 export class AirplaneRepository extends CrudRepository<
   typeof airplane,

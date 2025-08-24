@@ -1,7 +1,7 @@
 import { PgTable } from "drizzle-orm/pg-core";
 import { InferInsertModel, InferSelectModel, eq } from "drizzle-orm";
-import { db } from "@repo/db";
-import { AppError } from "../error/app-error";
+import { db } from "../db";
+import { AppError } from "@repo/commons";
 import { StatusCodes } from "http-status-codes";
 
 export class CrudRepository<

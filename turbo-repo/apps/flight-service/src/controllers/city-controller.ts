@@ -30,6 +30,7 @@ const getCities = async (c: Context) => {
     c.status(StatusCodes.OK);
     return c.json(SuccessResponse);
   } catch (error) {
+    console.log(error);
     // @ts-ignore
     ErrorResponse.error = error;
     //  @ts-ignore
