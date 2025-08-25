@@ -1,0 +1,16 @@
+{
+  "name": "booking-service",
+  "scripts": {
+    "dev": "bun run --hot src/index.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:seed:up": "bun run src/seeders/up.ts",
+    "db:seed:down": "bun run src/seeders/down.ts"
+  },
+  "dependencies": {
+    "hono": "^4.9.2"
+  },
+  "devDependencies": {
+    "node-cron": "^4.2.1"
+  }
+}
